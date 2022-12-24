@@ -2,7 +2,6 @@ import heapq
 import os
 import ast
 
-
 class Node:
     def __init__(self, char, count):
         self.char = char
