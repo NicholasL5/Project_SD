@@ -189,9 +189,13 @@ class Queue:
         itr = self.front
         while itr is not self.rear:
             if itr.index == int(ind):
+                if itr.compressed is None:
+                    return itr.original_path
                 return itr.compressed
             itr = itr.next
         if itr.index == int(ind):
+            if itr.compressed is None:
+                return itr.original_path
             return itr.compressed
 
     def to_list(self):
