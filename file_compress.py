@@ -1,6 +1,9 @@
 import heapq
 import os
 import ast
+import huffman_tree as h_tree
+import copy
+
 
 class Node:
     def __init__(self, char, count):
@@ -124,16 +127,28 @@ class FileCompress:
         data_path = compressed_dir + "data.txt"
 
         with open(file, "r") as f:
+            print('1')
             data = f.read()
+            print('2')
             mapped = self.map_char(data)
+            print('3')            
+            code,r_code = h_tree.create_tree(mapped)
+            print('4')            
             # print(mapped)
-            self.buat_heap(mapped)
-            while len(self.heap) != 1:
-                self.buat_tree()
-            self.buat_code()
+            # self.buat_heap(mapped)
+            # while len(self.heap) != 1:
+            #     self.buat_tree()
+            # self.buat_code()
+            # print(self.code_dict)
+            self.code_dict = copy.deepcopy(code)
+            self.reverse_code = copy.deepcopy(r_code)
+            print('5')
             text_code = self.ganti_text(data)
+            print('6')
             output = self.to_binary(text_code)
+            print('7')
             tabel_code = str(self.reverse_code)
+            print('8')
 
         with open(data_path, "w") as out:
             out.write(tabel_code)
