@@ -109,12 +109,7 @@ class FileCompress:
             file_name = file_dir[index+1:]
         else:
             file_name = file_dir
-        # if "-" in file_name:
-        #     ind1 = file_name.rfind("/")
-        #     ind = file_name.rfind("-")
-        #     check = file_name[ind] + "-compressed"
-        # else:
-        #     check = file_name + "-compressed"
+
         if "compressed" in file_dir:
             return True
         # buat folder compressed
@@ -127,13 +122,13 @@ class FileCompress:
         data_path = compressed_dir + "data.txt"
 
         with open(file, "r") as f:
-            print('1')
+            # print('1')
             data = f.read()
-            print('2')
+            # print('2')
             mapped = self.map_char(data)
-            print('3')            
+            print(mapped)
             code,r_code = h_tree.create_tree(mapped)
-            print('4')            
+            # print('4')
             # print(mapped)
             # self.buat_heap(mapped)
             # while len(self.heap) != 1:
@@ -142,13 +137,13 @@ class FileCompress:
             # print(self.code_dict)
             self.code_dict = copy.deepcopy(code)
             self.reverse_code = copy.deepcopy(r_code)
-            print('5')
+            # print('5')
             text_code = self.ganti_text(data)
-            print('6')
+            # print('6')
             output = self.to_binary(text_code)
-            print('7')
+            # print('7')
             tabel_code = str(self.reverse_code)
-            print('8')
+            # print('8')
 
         with open(data_path, "w") as out:
             out.write(tabel_code)
