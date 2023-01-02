@@ -1,10 +1,12 @@
+import os
+from os import path
 class Node:
     def __init__(self, data, index):
         self.data = data
         self.next = None
         self.index = index
         self.prev = None
-        self.original_path = data
+        self.original_Path = data
         self.decompressed = None
         self.compressed = None
 
@@ -22,6 +24,20 @@ class Queue:
         if not self.check_que(new_data):
             self.counter += 1
             new_node = Node(new_data, self.counter)
+            index = str(new_data).rfind("/")
+            file = new_data[int(index)+1:]
+            index2 = str(file).rfind(".")
+            filename = file[:index2]
+            check_compress = new_data[:int(index)+1] + "compressed/" + filename + "-compressed/" + filename + ".bin"
+            check_decompress = new_data[:int(index) + 1] + "compressed/" + filename + "-compressed/" + filename + "-decompressed.txt"
+            if path.exists(check_compress):
+                new_node.compressed = str(check_compress)
+                new_node.data = str(check_compress)
+
+            if path.exists(check_decompress):
+                new_node.decompressed = str(check_decompress)
+                new_node.data = str(check_decompress)
+
             if self.isEmpty():
                 self.front = new_node
                 self.front.next = self.front
@@ -63,8 +79,16 @@ class Queue:
             itr = self.front
             while itr is not None:
                 if itr.index == int(i)+1:
+                    Path = str(itr.compressed)
+                    index = Path.rfind("/")
+                    data_Path = Path[:(int(index)+1)] + "data.txt"
+                    # print(Path)
+                    if Path:
+                        os.remove(Path)
+                    if data_Path:
+                        os.remove(data_Path)
                     itr.compressed = None
-                    itr.data = itr.original_path
+                    itr.data = itr.original_Path
                     break
                 itr = itr.next
 
@@ -73,11 +97,14 @@ class Queue:
             itr = self.front
             while itr is not None:
                 if itr.index == int(i)+1:
+                    Path = str(itr.decompressed)
+                    if Path:
+                        os.remove(Path)
                     itr.decompressed = None
                     if itr.compressed:
                         itr.data = itr.compressed
                     else:
-                        itr.data = itr.original_path
+                        itr.data = itr.original_Path
                     break
                 itr = itr.next
 
@@ -86,30 +113,30 @@ class Queue:
         if not self.isEmpty():
             itr = self.front
             while itr:
-                if itr.original_path == data:
+                if itr.original_Path == data:
                     return True
                 if itr == self.rear:
-                    if itr.original_path == data:
+                    if itr.original_Path == data:
                         return True
                     else:
                         break
                 itr = itr.next
 
-    def insert_compressed(self, index, path):
+    def insert_compressed(self, index, Path):
         itr = self.front
         while itr:
             if itr.index == int(index):
-                itr.compressed = path
-                itr.data = path
+                itr.compressed = Path
+                itr.data = Path
                 return
             itr = itr.next
 
-    def insert_decompressed(self, index, path):
+    def insert_decompressed(self, index, Path):
         itr = self.front
         while itr:
             if itr.index == int(index):
-                itr.decompressed = path
-                itr.data = path
+                itr.decompressed = Path
+                itr.data = Path
                 return
             itr = itr.next
 
@@ -180,22 +207,22 @@ class Queue:
         itr = self.front
         while itr is not self.rear:
             if itr.index == int(ind):
-                return itr.original_path
+                return itr.original_Path
             itr = itr.next
         if itr.index == int(ind):
-            return itr.original_path
+            return itr.original_Path
 
     def get_compressed(self, ind):
         itr = self.front
         while itr is not self.rear:
             if itr.index == int(ind):
                 if itr.compressed is None:
-                    return itr.original_path
+                    return itr.original_Path
                 return itr.compressed
             itr = itr.next
         if itr.index == int(ind):
             if itr.compressed is None:
-                return itr.original_path
+                return itr.original_Path
             return itr.compressed
 
     def to_list(self):
@@ -217,7 +244,7 @@ class Queue:
 
     def get_data(self):
         if self.pointer is not None:
-            var = [f"original: {self.pointer.original_path}",
+            var = [f"original: {self.pointer.original_Path}",
                    f"compressed: {str(self.pointer.compressed)}",
                    f"decompressed: {str(self.pointer.decompressed)}",
                    f"data now: {str(self.pointer.data)}"]
@@ -234,7 +261,7 @@ class Queue:
     def peek(self):
         self.pointer = self.front
         if self.pointer:
-            var = [f"original: {self.front.original_path}",
+            var = [f"original: {self.front.original_Path}",
                    f"compressed: {str(self.front.compressed)}",
                    f"decompressed: {str(self.front.decompressed)}",
                    f"data now: {str(self.front.data)}"]

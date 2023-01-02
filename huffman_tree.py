@@ -35,7 +35,7 @@ def create_tree_util(values, stored: list):
     candidate1 = stored[0]
     stored.pop(0)
 
-    if (stored):
+    if stored:
 
         candidate_sp = stored.pop(0)
 
@@ -46,7 +46,7 @@ def create_tree_util(values, stored: list):
                 new_node = node(candidate1[1] + candidate_sp[1])
                 new_node.left = candidate1[0]
                 new_node.right = candidate_sp[0]
-                values[candidate2[0]] = candidate2[1]  #
+                values[candidate2[0]] = candidate2[1]
                 stored.append([new_node, new_node.val])
                 create_tree_util(values, stored)
 
